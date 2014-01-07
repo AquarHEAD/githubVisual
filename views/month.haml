@@ -39,6 +39,8 @@
         GitHub, Visulized
         %small
           = DateTime.parse("2013.#{"%02d" % @month}.01").strftime("%B, %Y")
+          - if @lang
+            = ", #{@lang}"
   .row#hoursmap
   .row#langsrank
 
@@ -62,10 +64,65 @@
       }
       return path;
     })
-    .attr("fill", "#ffffff")
+    .attr("fill-opacity", 0)
     .attr("stroke", "#3B444B")
     .attr("stroke-width", 3)
     .attr("stroke-linejoin", "round");
+
+  map.selectAll("div.dashline")
+    .data(hours)
+    .enter()
+    .append("line")
+    .attr("x1", function(d, i) {
+      if (i % 2 == 0) {
+        return 15+i*40;
+      } else {
+        return 0;
+      }
+    })
+    .attr("y1", function(d, i) {
+      if (i % 2 == 0) {
+        return 270-(d/hmax*250);
+      } else {
+        return 0;
+      }
+    })
+    .attr("x2", function(d, i) {
+      if (i % 2 == 0) {
+        return 15+i*40;
+      } else {
+        return 0;
+      }
+    })
+    .attr("y2", function(d, i) {
+      if (i % 2 == 0) {
+        return 270;
+      } else {
+        return 0;
+      }
+    })
+    .attr("stroke", "grey")
+    .attr("stroke-dasharray", "3, 5")
+    .attr("stroke-width", 1);
+
+  map.selectAll("div.hourtext")
+    .data(hours)
+    .enter()
+    .append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", function(d, i) {
+      return 15+i*40;
+    })
+    .attr("y", 290)
+    .text(function(d, i) {
+      if (i % 2 == 0) {
+        return i+":00"
+      } else {
+        return "";
+      }
+    })
+    .style("font-size", 14)
+    .style("font-family", "'Klinic Slab'");
 
 :javascript
   var langs = #{@langs};
