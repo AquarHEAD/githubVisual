@@ -1,0 +1,15 @@
+*.DS_Store
+Thumbs.db
+Desktop.ini
+
+!*.keep
+
+test.*
+*.pid
+*.log
+*.rdb
+.ruby-gemset
+.ruby-version
+
+*.gz
+redis/dump*

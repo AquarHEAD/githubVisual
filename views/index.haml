@@ -1,0 +1,27 @@
+.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+  .container
+    .navbar-header
+      %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{:href => "#"} GH, V
+    .navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-right
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            2013
+            %b.caret
+          %ul.dropdown-menu
+            %li.dropdown-header month
+            - (1..12).each do |month|
+              %li
+                %a{href: "/2013/#{month}"}
+                  = month
+    / /.nav-collapse
+.container
+  / Main component for a primary marketing message or call to action
+  .row
+    .col-xs-12
+      %h1 GitHub, Visulized
