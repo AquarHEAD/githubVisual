@@ -39,19 +39,45 @@
         GitHub, Visulized
         %small
           = DateTime.parse("2013.#{"%02d" % @month}.01").strftime("%B, %Y")
+  .row#hoursmap
   .row#langsrank
 
 :javascript
-  var langs = #{@langs.inspect};
+  var hours = #{@hours};
+  var hmax = #{@hmax};
+
+  var map = d3.select("#hoursmap")
+    .append("svg")
+    .attr("width", 950)
+    .attr("height", 300)
+    .attr("style", "display: block; margin: auto;");
+
+  map.append("path")
+    .attr("d", function() {
+      path = "M15,";
+      path += (270-(hours[0]/hmax*250));
+      for (var i in hours.slice(1)) {
+        path += "L"+(55+parseInt(i)*40)+",";
+        path += (270-(hours[parseInt(i)+1]/hmax*250));
+      }
+      return path;
+    })
+    .attr("fill", "#ffffff")
+    .attr("stroke", "#3B444B")
+    .attr("stroke-width", 3)
+    .attr("stroke-linejoin", "round");
+
+:javascript
+  var langs = #{@langs};
   var colors = #{@langscolor};
 
-  var svg = d3.select("#langsrank")
+  var rank = d3.select("#langsrank")
     .append("svg")
     .attr("width", 950)
     .attr("height", 100+65*langs.length)
     .attr("style", "display: block; margin: auto;");
 
-  svg.selectAll("div.lang_box")
+  rank.selectAll("div.lang_box")
     .data(langs)
     .enter()
     .append("rect")
@@ -68,7 +94,7 @@
     })
     .attr("fill-opacity", 0.7);
 
-  svg.selectAll("div.langname_box")
+  rank.selectAll("div.langname_box")
     .data(langs)
     .enter()
     .append("text")
@@ -82,7 +108,7 @@
     .style("font-size", 20)
     .style("font-family", "'Klinic Slab'");
 
-  svg.selectAll("div.rank_box")
+  rank.selectAll("div.rank_box")
     .data(langs)
     .enter()
     .append("text")
@@ -96,7 +122,7 @@
     .style("font-size", 16)
     .style("font-family", "'Klinic Slab'");
 
-  svg.selectAll("div.compare_box")
+  rank.selectAll("div.compare_box")
     .data(langs)
     .enter()
     .append("text")
