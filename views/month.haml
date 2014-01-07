@@ -39,8 +39,78 @@
         GitHub, Visulized
         %small
           = DateTime.parse("2013.#{"%02d" % @month}.01").strftime("%B, %Y")
-      .row#langsrank
-      %ol
-        - @mlangs.each do |lang|
-          %li
-            = "#{lang[0]}, #{lang[1]}"
+  .row#langsrank
+
+:javascript
+  var langs = #{@langs.inspect};
+  var colors = #{@langscolor};
+
+  var svg = d3.select("#langsrank")
+    .append("svg")
+    .attr("width", 950)
+    .attr("height", 100+65*langs.length)
+    .attr("style", "display: block; margin: auto;");
+
+  svg.selectAll("div.lang_box")
+    .data(langs)
+    .enter()
+    .append("rect")
+    .attr("x", 100)
+    .attr("y", function(d, i) {
+      return 40+i*65;
+    })
+    .attr("width", function(d) {
+      return (d[1]/langs[0][1]*850);
+    })
+    .attr("height", 60)
+    .attr("fill", function(d) {
+      return colors[d[0]];
+    })
+    .attr("fill-opacity", 0.7);
+
+  svg.selectAll("div.langname_box")
+    .data(langs)
+    .enter()
+    .append("text")
+    .attr("x", 110)
+    .attr("y", function(d, i) {
+      return 85+i*65;
+    })
+    .text(function(d) {
+      return d[0]+", "+d[1];
+    })
+    .style("font-size", 20)
+    .style("font-family", "'Klinic Slab'");
+
+  svg.selectAll("div.rank_box")
+    .data(langs)
+    .enter()
+    .append("text")
+    .attr("x", 110)
+    .attr("y", function(d, i) {
+      return 63+i*65;
+    })
+    .text(function(d, i) {
+      return "#"+(i+1);
+    })
+    .style("font-size", 16)
+    .style("font-family", "'Klinic Slab'");
+
+  svg.selectAll("div.compare_box")
+    .data(langs)
+    .enter()
+    .append("text")
+    .attr("text-anchor", "end")
+    .attr("x", 95)
+    .attr("y", function(d, i) {
+      return 85+i*65;
+    })
+    .text(function(d, i) {
+      if (i>0) {
+        result = Math.round((langs[i-1][1]-d[1]) / langs[i-1][1]*100);
+        return "-"+result+"%";
+      }
+    })
+    .style("font-size", 16)
+    .style("font-family", "'Klinic Slab'");
+

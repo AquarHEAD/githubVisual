@@ -23,7 +23,14 @@ end
 
 // calc jan langs hours
 def calc_jan_langs
-
+  (1..31).each do |day|
+    (0..23).each do |hour|
+      ss = @redis.hgetall "2013-1-#{day}-#{hour}"
+      ss.each do |k,v|
+        @redis.hincrby "2013-1_hour_#{hour}", k, v.to_i
+      end
+    end
+  end
 end
 # @redis.hincrby "2013", event["repository"]["language"], size
 # @redis.hincrby "2013-#{month}", event["repository"]["language"], size
